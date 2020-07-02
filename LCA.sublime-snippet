@@ -1,0 +1,73 @@
+<snippet>
+	<content><![CDATA[
+   
+class LCA
+{
+
+    vector<vector<int>>up;
+    vector<int> tin, tout;
+    int n;
+    int l;
+    int timer = 0;
+public :
+    vector<vector<pair<int,int>>> &adj;
+
+    LCA(int nn, vector<vector<pair<int,int>>> &tadj, int root = 1): adj(tadj)
+    {
+        n = nn + 1;
+        l = ceil(log2(n));
+        tin.resize(n);
+        tout.resize(n);
+
+        up.assign(n, vector<int>(l + 1));
+
+        dfs(root, root);
+
+    }
+
+
+    void dfs(int v, int p)
+    {
+
+        tin[v] = timer++;
+        up[v][0] = p;
+        for (int i = 1; i <= l ; ++i)
+            up[v][i] = up[ up[v][i - 1] ][i - 1];
+
+
+        for(auto c : adj[v]){
+            if(c.fs != p)dfs(c.fs, v);
+          }
+        tout[v] = timer++;
+
+    }
+
+    bool is_ancess(int u, int v)
+    {
+
+        return tin[u] <= tin[v] && tout[u] >= tout[v];
+    }
+
+    int lca(int u, int v)
+    {  
+        if(is_ancess(u, v))return u;
+        if(is_ancess(v, u))return v;
+        for (int i = l; i>=0 ; i--)
+            if(!is_ancess(up[u][i],v))
+                u=up[u][i];
+        
+        return up[u][0];
+    }
+
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+
+	<tabTrigger>lca</tabTrigger>
+	<scope>source.c++</scope>
+	
+</snippet>

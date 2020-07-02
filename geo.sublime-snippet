@@ -1,0 +1,67 @@
+<snippet>
+	<content><![CDATA[
+
+struct pt {
+ 
+    ll x,y;
+    pt(){}
+    pt(ll _x,ll _y){
+        x=_x,y=_y;
+    }
+    pt(pair<ll,ll> a){
+        x=a.fs,y=a.sc;
+    }
+    void out(){
+        ct x spc y<<endl;
+    }
+    void in(){
+        scanf("%lld %lld",&x,&y);
+    }
+ 
+    pt operator -(pt a){
+           return pt(x-a.x,y-a.y);
+    }
+ 
+    ll cross(pt a){
+        return x*a.y-y*a.x;
+    }
+    ll cross(pt &a,pt &b){
+        pt o(x,y);
+        return (a-o).cross(b-o);
+    }
+    ll sgn(pt &a){
+        ll tm=cross(a);
+        return tm>0?1:(tm==0?0:-1);
+    }
+    ll sgn(pt &a,pt &b){
+        ll tm=cross(a,b);
+        return tm>0?1:(tm==0?0:-1);
+    }
+    ll sqrLen(){
+        return x*x+y*y;
+    }
+    ll dot(pt &a){
+        return x*a.x+y*a.y;
+    }
+    bool operator <(pt &a){
+        return (x<a.x)||(x==a.x && y<a.y);
+    }
+};
+bool in_triangle(pt a,pt b,pt c,pt point){
+ 
+     ll area1=abs(a.cross(b,c));
+     ll area2=abs(point.cross(a,b))+abs(point.cross(b,c))+abs(point.cross(c,a));
+ 
+     return area1==area2;
+ 
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+
+	<tabTrigger>geometry_integer</tabTrigger>
+
+	
+</snippet>

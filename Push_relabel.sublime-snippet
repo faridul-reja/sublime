@@ -1,0 +1,113 @@
+<snippet>
+  <content>
+<![CDATA[
+
+vector<vector<int>> flow, capacity;
+vector<int>excess, height;
+int inf = 100000000;
+int n;
+void push(int u, int v)
+{
+
+    int c = min(excess[u], capacity[u][v] - flow[u][v]);
+
+    flow[u][v] += c;
+    flow[v][u] -= c;
+    excess[u] -= c;
+    excess[v] += c;
+
+}
+
+void relabel(int u)
+{
+
+    int d = inf;
+
+    for (int i = 0; i < n; ++i)
+    {
+        if(excess[u] && capacity[u][i] - flow[u][i] > 0)d = min(d, height[i]);
+    }
+
+    if(d < inf)height[u] = d + 1;
+}
+
+vector<int> get_max(int s, int t)
+{
+
+    vector<int> rt;
+
+    for (int i = 0; i < n; ++i)
+    {
+        if(i != s && i != t && excess[i])
+        {
+            if(!rt.empty() && height[i] > height[rt[0]])rt.clear();
+            if(rt.empty() || height[i] == height[rt[0]])rt.pb(i);
+        }
+    }
+
+    return rt;
+
+}
+
+
+int maxflow(int s, int t)
+{
+
+
+    excess.assign(n, 0);
+    height.assign(n, 0);
+
+    height[s] = n;
+    excess[s] = inf;
+
+    for (int i = 0; i < n; ++i)
+        if(i != s)push(s, i);
+
+    vector<int>cur;
+
+    while(!(cur = get_max(s, t)).empty())
+    {
+
+        for(int i : cur)
+        {
+
+
+            bool pushed = false;
+            for (int j = 0; j < n && excess[i]; ++j)
+            {
+                if(capacity[i][j] - flow[i][j] > 0 && height[i] == height[j] + 1)
+                {
+                    push(i, j);
+                    pushed = true;
+                }
+            }
+
+            if(!pushed)
+            {
+                relabel(i);
+                break;
+            }
+
+
+
+        }
+    }
+
+    int fl = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        fl += flow[s][i];
+    }
+    return fl;
+
+}
+
+
+]]>
+  </content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <!-- <tabTrigger>hello</tabTrigger> -->
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <!-- <scope>source.python</scope> -->
+  <tabTrigger>flow_push_relabel</tabTrigger>
+</snippet>

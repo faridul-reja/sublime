@@ -1,0 +1,14 @@
+<snippet>
+    <content><![CDATA[
+for(int k=0; k<${1:n} ; k++){
+    
+    ${2:}
+
+}
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>fork</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.c++</scope>
+    <decription>forj</decription>
+</snippet>

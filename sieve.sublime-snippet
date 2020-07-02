@@ -1,0 +1,36 @@
+<snippet>
+	<content><![CDATA[
+ const int size=100000000;
+vector<int>primes(5767773);
+bool mark[size+5];
+int cnt=0;
+void sieve(){
+     
+     ll lm=sqrt(size)+2;
+     for(ll i=3; i<=lm;i+=2){
+        if(mark[i])continue;
+         for(ll j=i*i;j<=size; j+=i){
+            mark[j]=true;
+         }
+     }
+
+     primes[cnt++]=2;
+     for (int i = 3; i <=size; i+=2)
+     {
+        if(!mark[i])primes[cnt++]=i;
+     }
+
+}
+
+
+
+]]></content>
+
+<tabTrigger>sieve</tabTrigger>
+<scope>source.c++</scope>
+
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

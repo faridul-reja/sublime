@@ -1,0 +1,174 @@
+<snippet>
+    <content><![CDATA[
+ #include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef unsigned long long ull;
+#define PI (acos(-1))
+#define ct cout<<
+#define cn cin>>
+#define spc <<" "<<
+#define nl puts("")
+#define _fl(x) puts("FLAG " #x);
+#define  _(x)  cout<< #x <<" is "<< x <<endl;
+#define fs first
+#define sc second
+#define pb push_back
+#define all(v)  (v).begin(), (v).end()
+#define _109 (1000000000)
+#define _0(arr) memset(arr,0,sizeof ( arr ) )
+#define _1(arr) memset(arr,-1,sizeof ( arr ) )
+#define _ninp(n,arr) for(int i=0; i<n;i++)cin>>arr[i];
+#define _nout(n,arr) for(int i=0; i<n;i++)cout<<arr[i]<<" \n"[i==n-1];
+double _eps=1e-6;
+long long gcd(long long a, long long b) {
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+const int K = 26;
+
+struct Vertex
+{
+    int next[K];
+    bool leaf = false;
+    int p = -1;
+    char pch;
+    int link = -1;
+    int go[K];
+    int ind;
+    Vertex(int p = -1, char ch = '*') : p(p), pch(ch)
+    {
+        fill(begin(next), end(next), -1);
+        fill(begin(go), end(go), -1);
+    }
+};
+
+vector<Vertex> t(1);
+
+void ad(string &s, int ind)
+{
+
+    int v = 0;
+    for (char ch : s)
+    {
+        int c;
+        if(isupper(ch))c = ch - 'A' + 26;
+        else c = ch - 'a';
+
+        if (t[v].next[c] == -1)
+        {
+            t[v].next[c] = t.size();
+            t.emplace_back(v, ch);
+        }
+        v = t[v].next[c];
+    }
+    t[v].leaf = true;
+    t[v].ind = ind;
+}
+
+
+int go(int v, char ch);
+
+int get_link(int v)
+{
+
+    if (t[v].link == -1)
+    {
+        if (v == 0 || t[v].p == 0)
+            t[v].link = 0;
+        else
+            t[v].link = go(get_link(t[v].p), t[v].pch);
+    }
+
+   return t[v].link;
+}
+
+int go(int v, char ch)
+{
+    int c;
+    if(isupper(ch))c = ch - 'A' + 26;
+    else c = ch - 'a';
+
+    if (t[v].go[c] == -1)
+    {
+        if (t[v].next[c] != -1)
+            t[v].go[c] = t[v].next[c];
+        else
+            t[v].go[c] = v == 0 ? 0 : go(get_link(v), ch);
+    }
+
+    return t[v].go[c];
+}
+
+
+vector<int>leafs[100100];
+bool vis[100100];
+string tt;
+void prep(){
+
+   for (int i = 0; i < t.size(); ++i)get_link(i);
+
+
+    for (int i = 1; i < t.size(); ++i)
+    {
+        int l = i;
+        if(vis[i])continue;
+
+        vector<int>path;
+        while(l)
+        {
+            path.pb(l);
+            if(vis[l])break;
+            vis[l] = true;
+            l = t[l].link;
+        }
+        
+
+        int n = path.size();
+        if(!n)continue;
+
+        if(leafs[path[n-1]].size()==0 && t[path[n - 1]].leaf) leafs[path[n - 1]].pb(t[path[n - 1]].ind);
+        n -=2;
+
+        for(; n >= 0; n--)
+        {
+            if(t[path[n]].leaf)leafs[path[n]].pb(t[path[n]].ind);
+            for (int c : leafs[path[n + 1]])
+            {
+                leafs[path[n]].pb(c);
+            }
+        }
+    }
+    
+}
+
+int main(){
+    
+    cn tt;
+    int n;
+    cn n;
+    for (int i = 0; i < n; ++i)
+    {
+        string s;
+        cn s;
+        ad(s, i); 
+    }
+    prep();
+
+    
+
+    return 0;
+}
+
+]]></content>
+
+<tabTrigger>aho-corasik</tabTrigger>
+<scope>source.c++</scope>
+
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <!-- <tabTrigger>hello</tabTrigger> -->
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <!-- <scope>source.python</scope> -->
+</snippet>

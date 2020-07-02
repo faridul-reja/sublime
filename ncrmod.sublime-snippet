@@ -1,0 +1,46 @@
+<snippet>
+	<content><![CDATA[
+ 
+ll fact[1200];
+ll mod=1000000007; 
+ll egcd(ll a, ll b, ll & x, ll & y) {
+    if (a == 0) {
+        x = 0;
+        y = 1;
+        return b;
+    }
+    ll x1, y1;
+    ll d = egcd(b % a, a, x1, y1);
+    x = y1 - (b / a) * x1;
+    y = x1;
+    return d;
+}
+ll miverse(ll a,ll m){
+    
+ 
+    ll x,y;
+    egcd(a,m,x,y);
+    return (x+m)%m;
+}
+
+
+ll ncr(ll n,ll r){
+
+    return ( ( (fact[n]*miverse(fact[n-r],mod))%mod )*miverse(fact[r],mod))%mod;
+}
+
+ll npr(ll n,ll r){
+
+    return (fact[n]*miverse(fact[n-r],mod))%mod;
+
+}
+
+]]></content>
+
+<tabTrigger>ncrmod</tabTrigger>
+<scope>source.c++</scope>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

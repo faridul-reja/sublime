@@ -1,0 +1,83 @@
+<snippet>
+	<content><![CDATA[
+
+
+vector<int>parent;
+vector<int> size;
+int find_set(int v)
+{
+    if (v == parent[v])
+        return v;
+    return parent[v] = find_set(parent[v]);
+}
+
+void make_set(int n)
+{
+    parent.clear();
+    size.clear();
+    parent.resize(n);
+    size.assign(n,1);
+
+    for (int i = 1; i <=n; ++i)
+        parent[i]=i;
+}
+
+int union_sets(int a, int b)
+{
+    a = find_set(a);
+    b = find_set(b);
+    if (a != b)
+    {
+        if (size[a] < size[b])
+            swap(a, b);
+        parent[b] = a;
+        size[a] += size[b];
+        return 1;
+    }
+    else return 0;
+}
+
+
+using pii=pair<int, pair<int, int>>;
+
+int mst(int n, vector<pii> &lst,int sign)
+{
+    make_set(n+1);
+
+    priority_queue<pii>pq;
+
+    for(auto x:lst)pq.push({x.fs*sign,x.sc});
+
+    ll res=0;
+    int sets=n;
+
+    while(!pq.empty()){
+      
+      pii  v=pq.top();
+      pq.pop();
+        if(union_sets(v.sc.fs,v.sc.sc)){
+          res+=v.fs*sign;
+          sets--;
+        }
+        
+        
+
+    }
+
+    if(sets==1)return res;
+    return -1;
+
+
+}
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+
+	<tabTrigger>mst</tabTrigger>
+
+	
+</snippet>

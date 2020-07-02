@@ -1,0 +1,37 @@
+<snippet>
+	<content><![CDATA[
+
+const int N=100000000;
+int least_prime[N+1];
+vector<int>primes(5761455+1);
+int cnt=0;
+
+void lp(){
+
+   for(int k=2; k<=N ; k++){
+       if(least_prime[k]==0){
+        least_prime[k]=k;
+        primes[cnt++]=k;
+       }
+
+       for(int j=0; j<cnt && primes[j]<=least_prime[k]; j++){
+       	      ll lm=k*primes[j]*1ll;
+       	      if(lm>N)break;
+       	      least_prime[lm]=primes[j];
+
+       }
+        
+   
+   }
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+
+	<tabTrigger>sieve(linear factorizing)</tabTrigger>
+	<scope>source.c++</scope>
+	
+</snippet>

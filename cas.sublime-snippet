@@ -1,0 +1,19 @@
+<snippet>
+	<content><![CDATA[
+ int T;
+    cn T;
+for(int caseno=1; caseno<=T  ;caseno++){
+${1:}
+
+//printf("Case %d: %lf\n",caseno,res);
+}
+]]></content>
+
+<tabTrigger>cas</tabTrigger>
+<scope>source.c++</scope>
+
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

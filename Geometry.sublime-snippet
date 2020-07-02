@@ -1,0 +1,214 @@
+<snippet>
+	<content><![CDATA[
+
+namespace Geometry
+{
+
+    // equation is in  ax+by+c=0 form
+
+
+
+
+    int  g(double p, double q)
+    {
+        return ((p > q) || fabs(p - q) <= _eps);
+    }
+
+    int  l(double p, double q)
+    {
+        return ((p < q) || fabs(p - q) <= _eps);
+    }
+
+    struct pt
+    {
+        double x, y;
+        void in()
+        {
+            cn x;
+            cn y;
+        }
+        void assign( double _x, double _y)
+        {
+            x = _x;
+            y = _y;
+        }
+        pt() {};
+        pt(double _x, double _y)
+        {
+            x = _x;
+            y = _y;
+        }
+        void out()
+        {
+            ct x spc y, nl;
+        }
+        bool operator ==(const pt &a)const
+        {
+            if(fabs(a.x - x) <= _eps && fabs(a.y - y) <= _eps)return true;
+            return false;
+        }
+
+        double to(pt a)
+        {
+            return sqrt((x - a.x) * (x - a.x) + (y - a.y) * (y - a.y));
+        }
+
+        vector<double> eqn(pt p)
+        {
+            double a, b, c;
+            a = (p.y - y);
+            b = -(p.x - x);
+            c = y * (p.x - x) - x * (p.y - y);
+            vector<double> r;
+            r.pb(a);
+            r.pb(b);
+            r.pb(c);
+            return r;
+        }
+        vector<double> eqn_by_slope(double m)
+        {
+            double a, b, c;
+            a = m;
+            b = -1;
+            c = y - m * x;
+            vector<double> r;
+            r.pb(a);
+            r.pb(b);
+            r.pb(c);
+            return r;
+        }
+
+        int on_this_line(pt p1, pt p2)
+        {
+            vector<double> v = p1.eqn(p2);
+            double r = v[0] * x + v[1] * y + v[2];
+            if(fabs(r) <= _eps)
+            {
+                if(g(x, min(p1.x, p2.x)) && l(x, max(p1.x, p2.x)) && g(y, min(p1.y, p2.y)) && l(y, max(p1.y, p2.y)))
+                    return 1;
+            }
+            return 0;
+        }
+
+        vector<double> eqn_orthogonal_to(pt p, pt q)
+        {
+            vector<double> v = p.eqn(q);
+            double a = v[1];
+            double b = -v[0];
+            double c = -(a * x + b * y);
+            vector <double> r;
+            r.pb(a);
+            r.pb(b);
+            r.pb(c);
+            return r;
+        }
+
+    };
+
+
+    pt solve_eqn(vector<double> v, vector<double> v1, ll INF)
+    {
+
+
+        v[2] = -v[2];
+        v1[2] = -v1[2];
+        double ab = v[0] * v1[1] - (v1[0] * v[1]);
+
+        if(fabs(ab) < _eps)
+        {
+            pt r(INF, INF);
+            ct "IN/f";
+            return r;
+        }
+
+        double x = (v[2] * v1[1] - (v1[2] * v[1])) / ab;
+        double y = (v[0] * v1[2] - (v1[0] * v[2])) / ab;
+        pt r(x, y);
+        return r;
+    }
+    int orientation(pt a, pt b, pt c)
+    {
+
+        double r = a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y);
+
+        if(fabs(r) <= _eps)return 0;
+        else if(r < 0) return -1;
+        return 1;
+
+    }
+
+    double evaluate_x(vector<double> &v, double x)
+    {
+
+
+        return ((-v[2] - x * v[0]) / v[1]);
+
+    }
+    double evaluate_y(vector<double> &v, double y)
+    {
+
+        return ((-v[2] - y * v[1]) / v[0]);
+
+    }
+
+    vector<pt> circle_line(double r, pt o, pt aa, pt bb)
+    {
+        aa.x -= o.x, bb.x -= o.x;
+        aa.y -= o.y, bb.y -= o.y;
+
+        vector<double> tm = aa.eqn(bb);
+        vector<pt> rt;
+        double a = tm[0], b = tm[1], c = tm[2]; // given as input
+
+        double x0 = -a * c / (a * a + b * b), y0 = -b * c / (a * a + b * b);
+        if (c * c > r * r * (a * a + b * b) + _eps)
+            return rt;
+        else if (abs (c * c - r * r * (a * a + b * b)) < _eps)
+        {
+            x0+=o.x;y0+=o.y;
+            rt.emplace_back(x0,y0);
+            return rt;
+        }
+        else
+        {
+            double d = r * r - c * c / (a * a + b * b);
+            double mult = sqrt (d / (a * a + b * b));
+            double ax, ay, bx, by;
+            ax = x0 + b * mult;
+            bx = x0 - b * mult;
+            ay = y0 - a * mult;
+            by = y0 + a * mult;
+            
+            ax+=o.x, bx+=o.x;
+            ay+=o.y, by+=o.y;
+            rt.emplace_back(ax,ay);
+            rt.emplace_back(bx,by);
+            return rt;
+        }
+    }
+
+    double angle(pt a, pt b, pt c)
+    {
+
+        double ab = a.to(b);
+        double ac = a.to(c);
+
+        b.x -= a.x, c.x -= a.x;
+        b.y -= a.y, c.y -= a.y;
+
+        double ang = (b.x * c.x + b.y * c.y) / (ab * ac);
+
+        return acos(ang);
+
+    }
+}
+
+$0
+]]></content>
+<tabTrigger>geometry</tabTrigger>
+<scope>source.c++</scope>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
