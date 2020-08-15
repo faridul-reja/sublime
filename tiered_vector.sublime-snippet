@@ -1,0 +1,127 @@
+<snippet>
+  <content>
+<![CDATA[
+
+struct tiered_vector
+{
+    ///insert ,delete, access element in O(sqrt(n))
+
+    int l;
+    vector<deque<int>> v;
+    tiered_vector(int n)
+    {
+
+        l = sqrt(n) + 1;
+        v.assign(l, deque<int>(l, -1));
+
+    }
+
+    void insert(int pos, int val)
+    {
+        int i = 0;
+        int lm = l;
+        while(lm <= pos)i++, lm += l;
+
+
+
+        v[i].insert(v[i].begin() + pos - i * l, val);
+
+
+        int bc;
+        bc = v[i].back();
+        v[i].pop_back();
+
+
+
+        for(int j = i + 1; j < l && bc != -1 ; j++)
+        {
+            v[j].push_front(bc);
+            bc = v[j].back();
+            v[j].pop_back();
+
+        }
+
+
+    }
+
+    int deletePos(int pos){
+        int i = 0;
+        int lm = l;
+        while(lm <= pos)i++, lm += l;
+        
+        int rt=v[i][pos - i * l];
+        
+        v[i].erase(v[i].begin() + pos - i * l);
+        i++;
+          
+        for (int j = i; j <l ; j++)
+        {
+            if(i==l-1){
+                v[j-1].push_back(v[j].front());
+                v[j].pop_front();
+                v[j].push_back(-1);
+            }
+
+            int val=v[j].front();
+            v[j-1].pb(val);
+            v[j].pop_front();
+
+            if(val==-1){
+                v[j].pb(-1);
+                break;
+            }
+
+
+        }
+
+        return rt;
+
+
+    }
+
+    int valueAt(int pos){
+        int i = 0;
+        int lm = l;
+        while(lm <= pos)i++, lm += l;
+        _(pos-i*l);
+        return v[i][pos - i * l];
+        
+        
+    }
+
+    vector<int> getArray()
+    {
+        vector<int>rt;
+
+        for (int i = 0; i < l; ++i)
+        {
+            int sw = 0;
+            for(int val : v[i])
+            {
+                if(val == -1)
+                {
+                    sw = 1;
+                    break;
+                }
+                rt.pb(val);
+            }
+
+            if(sw)break;
+        }
+
+        return rt;
+
+    }
+
+};
+
+
+
+]]>
+  </content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <!-- <tabTrigger>hello</tabTrigger> -->
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <!-- <scope>source.python</scope> -->
+  <tabTrigger>tiered_vector</tabTrigger>
+</snippet>

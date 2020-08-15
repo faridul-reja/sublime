@@ -20,7 +20,8 @@ typedef unsigned long long ull;
 #define _1(arr) memset(arr,-1,sizeof ( arr ) )
 #define _ninp(n,arr) for(int i=0; i<n;i++)cin>>arr[i];
 #define _nout(n,arr) for(int i=0; i<n;i++)cout<<arr[i]<<" \n"[i==n-1];
-double _eps=1e-6;
+#define YES(ok) if(ok)cout<<"YES\n";else cout<<"NO\n";
+#define yes(ok) if(ok)cout<<"yes\n";else cout<<"yes\n";
 
 
 int main() {
